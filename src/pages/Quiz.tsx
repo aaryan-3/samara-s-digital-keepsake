@@ -101,7 +101,7 @@ const Quiz = () => {
   return (
     <div className="page-container max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
       <div className="text-center mb-10 fade-in-up">
-        <h1 className="page-title">Do You Even Know Us? 🤔</h1>
+        <h1 className="page-title">How Well Do We Know You? 🤔</h1>
         <p className="page-subtitle">"Let's see if you remember properly."</p>
       </div>
 
