@@ -26,16 +26,21 @@ const memories = [
 ];
 
 export default function Memories() {
+
   const [selectedMemory, setSelectedMemory] = useState<any>(null);
 
   return (
+
     <div className="max-w-6xl mx-auto p-6">
+
 
       <h1 className="text-3xl font-bold text-center mb-10">
         Memories 📸
       </h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
         {memories.map((m) => (
 
@@ -46,19 +51,28 @@ export default function Memories() {
             style={{ transform: `rotate(${m.rotate})` }}
           >
 
-            <div className="bg-white shadow-md p-2">
 
-              <img
-                src={m.src}
-                alt={m.caption}
-                className="w-full h-48 object-cover"
-              />
+            <div className="bg-white shadow-lg p-3 hover:scale-105 transition duration-300">
 
-              <p className="text-center text-sm mt-2">
+
+              <div className="aspect-square overflow-hidden bg-gray-100">
+
+                <img
+                  src={m.src}
+                  alt={m.caption}
+                  className="w-full h-full object-cover"
+                />
+
+              </div>
+
+
+              <p className="text-center text-sm mt-3 font-medium">
                 {m.caption}
               </p>
 
+
             </div>
+
 
           </div>
 
@@ -66,14 +80,21 @@ export default function Memories() {
 
       </div>
 
+
+
       {selectedMemory && (
+
         <PhotoModal
           src={selectedMemory.src}
           alt={selectedMemory.caption}
           onClose={() => setSelectedMemory(null)}
         />
+
       )}
 
+
     </div>
+
   );
+
 }
