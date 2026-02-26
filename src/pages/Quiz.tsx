@@ -9,7 +9,7 @@ const questions = [
   },
   {
     q: "Do you have the worst feed among you, Rudra and I?",
-    correct: "Obviously?,
+    correct: "Obviously?",
     wrong: "No",
   },
   {
@@ -18,8 +18,8 @@ const questions = [
     wrong: "Yes",
   },
   {
-    q: "Are you always right?
-",
+    q: "Are you always right?",
+
     correct: "No",
     wrong: "Yes",
   },
