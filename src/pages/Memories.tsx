@@ -33,11 +33,9 @@ export default function Memories() {
 
     <div className="max-w-6xl mx-auto p-6">
 
-
       <h1 className="text-3xl font-bold text-center mb-10">
         Memories 📸
       </h1>
-
 
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -51,16 +49,16 @@ export default function Memories() {
             style={{ transform: `rotate(${m.rotate})` }}
           >
 
+            <div className="bg-white shadow-lg p-3 hover:scale-105 transition">
 
-            <div className="bg-white shadow-lg p-3 hover:scale-105 transition duration-300">
 
-
-              <div className="aspect-square overflow-hidden bg-gray-100">
+              {/* Scrollable photo container */}
+              <div className="h-64 overflow-y-auto rounded">
 
                 <img
                   src={m.src}
                   alt={m.caption}
-                  className="w-full h-full object-cover"
+                  className="w-full"
                 />
 
               </div>
@@ -70,9 +68,7 @@ export default function Memories() {
                 {m.caption}
               </p>
 
-
             </div>
-
 
           </div>
 
@@ -81,17 +77,13 @@ export default function Memories() {
       </div>
 
 
-
       {selectedMemory && (
-
         <PhotoModal
           src={selectedMemory.src}
           alt={selectedMemory.caption}
           onClose={() => setSelectedMemory(null)}
         />
-
       )}
-
 
     </div>
 
