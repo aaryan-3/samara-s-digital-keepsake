@@ -3,29 +3,30 @@ import { Link } from "react-router-dom";
 
 const questions = [
   {
-    q: "What momos did we eat near backroad?",
-    correct: "Kurkure Fried",
-    wrong: "Tandoori Fried",
+    q: "Can you drive a manual?",
+    correct: "No",
+    wrong: "Yes",
   },
   {
-    q: "When did we first fight?",
-    correct: "11 Jan 2025",
-    wrong: "10 Jan 2025",
+    q: "Do you have the worst feed among you, Rudra and I?",
+    correct: "Obviously?,
+    wrong: "No",
   },
   {
-    q: "Best hangout spot with Rudra",
-    correct: "My Room",
-    wrong: "Carter Road",
+    q: "Can you drive a cycle?",
+    correct: "No",
+    wrong: "Yes",
   },
   {
-    q: "Where were you when I got my CET results?",
-    correct: "Third Wave",
-    wrong: "Sia's House",
+    q: "Are you always right?
+",
+    correct: "No",
+    wrong: "Yes",
   },
   {
-    q: "When did we first meet?",
-    correct: "2023",
-    wrong: "2024",
+    q: "Are you the most goated among us all? 😜",
+    correct: "Yes",
+    wrong: "No",
   },
 ];
 
