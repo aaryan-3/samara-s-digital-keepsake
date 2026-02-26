@@ -52,13 +52,12 @@ export default function Memories() {
             <div className="bg-white shadow-lg p-3 hover:scale-105 transition">
 
 
-              {/* Scrollable photo container */}
-              <div className="h-64 overflow-y-auto rounded">
+              <div className="h-64 flex items-center justify-center bg-gray-100">
 
                 <img
                   src={m.src}
                   alt={m.caption}
-                  className="w-full"
+                  className="max-h-full max-w-full object-contain"
                 />
 
               </div>
@@ -78,11 +77,13 @@ export default function Memories() {
 
 
       {selectedMemory && (
+
         <PhotoModal
           src={selectedMemory.src}
           alt={selectedMemory.caption}
           onClose={() => setSelectedMemory(null)}
         />
+
       )}
 
     </div>

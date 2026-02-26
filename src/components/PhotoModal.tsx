@@ -1,25 +1,32 @@
-interface PhotoModalProps {
+type Props = {
   src: string;
   alt: string;
   onClose: () => void;
-}
+};
 
-const PhotoModal = ({ src, alt, onClose }: PhotoModalProps) => {
+export default function PhotoModal({ src, alt, onClose }: Props) {
+
   return (
+
     <div
-      className="fixed inset-0 z-50 bg-foreground/60 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-6"
       onClick={onClose}
     >
-      <div className="relative max-w-3xl max-h-[85vh] fade-in-up">
+
+      <div
+        className="max-w-5xl max-h-[90vh] flex items-center justify-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-contain rounded-2xl shadow-soft-lg"
+          className="max-h-[90vh] max-w-full object-contain rounded-lg shadow-xl"
         />
-        <p className="text-center text-primary-foreground mt-3 font-medium text-lg">{alt}</p>
-      </div>
-    </div>
-  );
-};
 
-export default PhotoModal;
+      </div>
+
+    </div>
+
+  );
+}
