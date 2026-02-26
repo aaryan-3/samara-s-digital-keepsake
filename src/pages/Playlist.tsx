@@ -1,14 +1,14 @@
-import { Music } from "lucide-react";
+import { Music, ExternalLink } from "lucide-react";
 
 const songs = [
-  { name: "Mexico", artist: "Karan Aujla", caption: "Vibes on another level" },
-  { name: "Bargad", artist: "Arpit Bala", caption: "Deep cuts only" },
-  { name: "Ucha Lamb Kad", artist: "Anand Raj Anand", caption: "Classic energy" },
-  { name: "Over The Top", artist: "Drake", caption: "Always on top" },
-  { name: "Sirra", artist: "Guru Randhawa", caption: "Feel good anthem" },
-  { name: "SOMETHING ABOUT YOU", artist: "Drake", caption: "You know the vibe" },
-  { name: "Hook Raja Ji", artist: "Arvind Akela Kallu Ji", caption: "Absolute banger" },
-  { name: "Hypnotize", artist: "The Notorious B.I.G.", caption: "Legend status" },
+  { name: "Mexico", artist: "Karan Aujla", caption: "Vibes on another level", url: "https://open.spotify.com/track/4ZMm3bmCaFKv0jd0axAEDi", cover: "https://i.scdn.co/image/ab67616d00001e02c5545f29bba2a3542bc0a63f" },
+  { name: "Bargad", artist: "Arpit Bala", caption: "Deep cuts only", url: "https://open.spotify.com/track/6Z8R0FhIGFqz4gE9Yj5tlf", cover: "https://i.scdn.co/image/ab67616d00001e02e1a37e23a3231824a7c3d8c7" },
+  { name: "Ucha Lamb Kad", artist: "Anand Raj Anand", caption: "Classic energy", url: "https://open.spotify.com/track/2plbrEY59IikOBgBGLjaoe", cover: "https://i.scdn.co/image/ab67616d00001e020e40ac241ff86273692f18b2" },
+  { name: "Over The Top", artist: "Drake", caption: "Always on top", url: "https://open.spotify.com/track/4fRBGLBMQIpHOMPfOQzFOx", cover: "https://i.scdn.co/image/ab67616d00001e02f907de96b9a4fbc04accc22d" },
+  { name: "Sirra", artist: "Guru Randhawa", caption: "Feel good anthem", url: "https://open.spotify.com/track/3yfZiFbRJhqWil0ogyMBMi", cover: "https://i.scdn.co/image/ab67616d00001e025f3ede47091b1bc76e8f18e5" },
+  { name: "SOMETHING ABOUT YOU", artist: "Drake", caption: "You know the vibe", url: "https://open.spotify.com/track/5QFBjGJMQqGMXWog9p4nRY", cover: "https://i.scdn.co/image/ab67616d00001e02f907de96b9a4fbc04accc22d" },
+  { name: "Hook Raja Ji", artist: "Arvind Akela Kallu Ji", caption: "Absolute banger", url: "https://open.spotify.com/track/3Z0oQ8oGnGCCPYVNsWbU7z", cover: "https://i.scdn.co/image/ab67616d00001e02b5a8e27d4e6c1d4e6f5c8d3a" },
+  { name: "Hypnotize", artist: "The Notorious B.I.G.", caption: "Legend status", url: "https://open.spotify.com/track/7KwZNVEaqikRSBbhqDHJ91", cover: "https://i.scdn.co/image/ab67616d00001e020da89f5b8bf766e42ceef786" },
 ];
 
 const Playlist = () => {
@@ -39,19 +39,35 @@ const Playlist = () => {
       {/* Song list */}
       <div className="grid gap-4 md:grid-cols-2">
         {songs.map((song, i) => (
-          <div
+          <a
             key={i}
-            className={`fade-in-up stagger-${Math.min(i + 1, 8)} soft-card flex items-center gap-4 hover:shadow-soft-lg hover:scale-[1.02] transition-all duration-300`}
+            href={song.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`fade-in-up stagger-${Math.min(i + 1, 8)} soft-card flex items-center gap-4 hover:shadow-soft-lg hover:scale-[1.02] transition-all duration-300 no-underline cursor-pointer group`}
           >
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Music className="w-5 h-5 text-primary" />
+            <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
+              <img
+                src={song.cover}
+                alt={`${song.name} cover`}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                  e.currentTarget.parentElement!.classList.add("bg-primary/10", "flex", "items-center", "justify-center");
+                  const icon = document.createElement("span");
+                  icon.textContent = "🎵";
+                  icon.className = "text-xl";
+                  e.currentTarget.parentElement!.appendChild(icon);
+                }}
+              />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <h3 className="font-semibold text-foreground truncate">{song.name}</h3>
               <p className="text-sm text-muted-foreground">{song.artist}</p>
               <p className="text-xs text-accent mt-0.5 italic">{song.caption}</p>
             </div>
-          </div>
+            <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+          </a>
         ))}
       </div>
     </div>

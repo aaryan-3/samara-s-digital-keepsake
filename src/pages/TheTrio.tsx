@@ -1,3 +1,6 @@
+import { useState } from "react";
+import PhotoModal from "@/components/PhotoModal";
+
 const captions = [
   "Goated",
   "Peak chaos",
@@ -15,6 +18,8 @@ const pastelColors = [
 ];
 
 const TheTrio = () => {
+  const [selectedCaption, setSelectedCaption] = useState<string | null>(null);
+
   return (
     <div className="page-container max-w-5xl mx-auto">
       <div className="text-center mb-10 fade-in-up">
@@ -26,7 +31,8 @@ const TheTrio = () => {
         {captions.map((cap, i) => (
           <div
             key={i}
-            className={`fade-in-up stagger-${Math.min(i + 1, 8)} group`}
+            className={`fade-in-up stagger-${Math.min(i + 1, 8)} group cursor-pointer`}
+            onClick={() => setSelectedCaption(cap)}
           >
             <div className="soft-card hover:shadow-soft-lg hover:scale-105 transition-all duration-300 text-center">
               <div
@@ -40,6 +46,14 @@ const TheTrio = () => {
           </div>
         ))}
       </div>
+
+      {selectedCaption && (
+        <PhotoModal
+          src=""
+          alt={selectedCaption}
+          onClose={() => setSelectedCaption(null)}
+        />
+      )}
 
       <p className="text-center text-muted-foreground mt-10 text-sm fade-in-up">
         💡 Replace placeholders with your trio photos!

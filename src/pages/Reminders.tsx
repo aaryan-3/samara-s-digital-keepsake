@@ -3,12 +3,17 @@ import { useEffect, useRef, useState } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 
 const items = [
-  "Arpit Bala",
-  "Cats",
-  "Social 2-pod",
-  "Wired earphones",
-  "Society Pani Puri",
-  "Karan Aujla",
+  { text: "Arpit Bala", emoji: "🎤" },
+  { text: "Cats", emoji: "🐱" },
+  { text: "Social 2-pod", emoji: "☕" },
+  { text: "Wired earphones", emoji: "🎧" },
+  { text: "Society Pani Puri", emoji: "🍽️" },
+  { text: "Karan Aujla", emoji: "🎵" },
+];
+
+const pastelColors = [
+  "hsl(350 80% 92%)", "hsl(30 60% 92%)", "hsl(200 50% 92%)",
+  "hsl(150 40% 92%)", "hsl(280 40% 92%)", "hsl(340 50% 92%)",
 ];
 
 const Reminders = () => {
@@ -54,7 +59,13 @@ const Reminders = () => {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <p className="text-lg font-medium text-foreground">{item}</p>
+            <div
+              className="aspect-square rounded-xl mb-3 flex items-center justify-center text-3xl mx-auto max-w-[120px] border-2 border-dashed border-primary/20"
+              style={{ backgroundColor: pastelColors[i] }}
+            >
+              📷
+            </div>
+            <p className="text-lg font-medium text-foreground">{item.emoji} {item.text}</p>
           </div>
         ))}
       </div>

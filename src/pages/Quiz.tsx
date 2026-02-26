@@ -1,31 +1,31 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 const questions = [
   {
     q: "What momos did we eat near backroad?",
-    left: "Tandoori Fried",
-    right: "Kurkure Fried",
+    correct: "Kurkure Fried",
+    wrong: "Tandoori Fried",
   },
   {
     q: "When did we first fight?",
-    left: "10 Jan 2025",
-    right: "11 Jan 2025",
+    correct: "11 Jan 2025",
+    wrong: "10 Jan 2025",
   },
   {
     q: "Best hangout spot with Rudra",
-    left: "Carter Road",
-    right: "My Room",
+    correct: "My Room",
+    wrong: "Carter Road",
   },
   {
     q: "Where were you when I got my CET results?",
-    left: "Sia's House",
-    right: "Third Wave",
+    correct: "Third Wave",
+    wrong: "Sia's House",
   },
   {
     q: "When did we first meet?",
-    left: "2024",
-    right: "2023",
+    correct: "2023",
+    wrong: "2024",
   },
 ];
 
@@ -35,10 +35,17 @@ const Quiz = () => {
   const [selected, setSelected] = useState<"left" | "right" | null>(null);
   const [done, setDone] = useState(false);
 
+  // Randomize correct answer position for each question (stable per mount)
+  const layouts = useMemo(
+    () => questions.map(() => (Math.random() < 0.5 ? "left" : "right")),
+    []
+  );
+
   const handleSelect = (choice: "left" | "right") => {
     if (selected) return;
     setSelected(choice);
-    if (choice === "right") setScore((s) => s + 1);
+    const correctSide = layouts[current];
+    if (choice === correctSide) setScore((s) => s + 1);
     setTimeout(() => {
       if (current + 1 >= questions.length) {
         setDone(true);
@@ -49,10 +56,11 @@ const Quiz = () => {
     }, 1200);
   };
 
+  const isCorrect = selected === layouts[current];
+
   const getScoreMessage = () => {
-    const finalScore = score + (selected === "right" && done ? 0 : 0);
-    if (finalScore === 5) return '"You actually remember everything."';
-    if (finalScore >= 3) return '"Not bad honestly."';
+    if (score === 5) return '"You actually remember everything."';
+    if (score >= 3) return '"Not bad honestly."';
     return '"That\'s embarrassing."';
   };
 
@@ -77,6 +85,17 @@ const Quiz = () => {
   }
 
   const q = questions[current];
+  const correctSide = layouts[current];
+  const leftOption = correctSide === "left" ? q.correct : q.wrong;
+  const rightOption = correctSide === "right" ? q.correct : q.wrong;
+
+  const getButtonClass = (side: "left" | "right") => {
+    if (!selected) return "border-border hover:border-primary hover:bg-primary/5 text-foreground hover:scale-105";
+    const isThisSideCorrect = side === correctSide;
+    if (isThisSideCorrect) return "border-green-500 bg-green-50 text-green-700";
+    if (selected === side) return "border-destructive bg-destructive/10 text-destructive";
+    return "border-border text-foreground";
+  };
 
   return (
     <div className="page-container max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
@@ -108,32 +127,22 @@ const Quiz = () => {
           <button
             onClick={() => handleSelect("left")}
             disabled={!!selected}
-            className={`p-4 rounded-xl font-medium text-sm transition-all duration-300 border-2 ${
-              selected === "left"
-                ? "border-destructive bg-destructive/10 text-destructive"
-                : "border-border hover:border-primary hover:bg-primary/5 text-foreground"
-            } ${!selected ? "hover:scale-105" : ""}`}
+            className={`p-4 rounded-xl font-medium text-sm transition-all duration-300 border-2 ${getButtonClass("left")}`}
           >
-            {q.left}
+            {leftOption}
           </button>
           <button
             onClick={() => handleSelect("right")}
             disabled={!!selected}
-            className={`p-4 rounded-xl font-medium text-sm transition-all duration-300 border-2 ${
-              selected === "right"
-                ? "border-green-500 bg-green-50 text-green-700"
-                : selected === "left"
-                ? "border-green-500 bg-green-50 text-green-700"
-                : "border-border hover:border-primary hover:bg-primary/5 text-foreground"
-            } ${!selected ? "hover:scale-105" : ""}`}
+            className={`p-4 rounded-xl font-medium text-sm transition-all duration-300 border-2 ${getButtonClass("right")}`}
           >
-            {q.right}
+            {rightOption}
           </button>
         </div>
 
         {selected && (
-          <p className={`mt-4 text-sm font-medium ${selected === "right" ? "text-green-600" : "text-destructive"}`}>
-            {selected === "right" ? "Correct! ✅" : "Wrong! ❌"}
+          <p className={`mt-4 text-sm font-medium ${isCorrect ? "text-green-600" : "text-destructive"}`}>
+            {isCorrect ? "Correct! ✅" : "Wrong! ❌"}
           </p>
         )}
       </div>
