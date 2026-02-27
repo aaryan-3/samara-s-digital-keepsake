@@ -1,27 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
-  id: number;
+  id: string;
   name: string;
   text: string;
-  timestamp: Date;
+  created_at: string;
 }
 
 const Messages = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [name, setName] = useState("");
   const [text, setText] = useState("");
+  const [sending, setSending] = useState(false);
 
-  const handleSend = () => {
+  useEffect(() => {
+    // Fetch existing messages
+    const fetchMessages = async () => {
+      const { data } = await supabase
+        .from("messages")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (data) setMessages(data);
+    };
+    fetchMessages();
+
+    // Subscribe to realtime inserts
+    const channel = supabase
+      .channel("messages-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          setMessages((prev) => [payload.new as Message, ...prev]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const handleSend = async () => {
     if (!name.trim() || !text.trim()) return;
-    const msg: Message = {
-      id: Date.now(),
+    setSending(true);
+    await supabase.from("messages").insert({
       name: name.trim(),
       text: text.trim(),
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [msg, ...prev]);
+    });
+    setSending(false);
     setText("");
   };
 
@@ -57,10 +86,10 @@ const Messages = () => {
         </div>
         <button
           onClick={handleSend}
-          disabled={!name.trim() || !text.trim()}
+          disabled={!name.trim() || !text.trim() || sending}
           className="mt-3 w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3 rounded-xl font-medium transition-all duration-200 hover:shadow-glow disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          <Send size={16} /> Send Message
+          <Send size={16} /> {sending ? "Sending..." : "Send Message"}
         </button>
       </div>
 
@@ -82,16 +111,12 @@ const Messages = () => {
               <p className="font-semibold text-foreground">{msg.name}</p>
               <p className="text-foreground/80 mt-1">{msg.text}</p>
               <p className="text-xs text-muted-foreground mt-2">
-                {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </p>
             </div>
           ))
         )}
       </div>
-
-      <p className="text-center text-xs text-muted-foreground mt-8 fade-in-up">
-        💡 Messages are stored in this session. Connect to Lovable Cloud for persistent storage!
-      </p>
     </div>
   );
 };
